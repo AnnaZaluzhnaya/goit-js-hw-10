@@ -16,9 +16,8 @@ refs.searchInput.addEventListener('input', debounce(onSearch,DEBOUNCE_DELAY));
 function onSearch(event) {
     event.preventDefault();
 
-    const searchQuery = event.target.value.trim();
-
-    if (searchQuery === "") {
+    const searchQuery = event.target.value.trim()
+    if (searchQuery === '') {
         refs.countryList.innerHTML = '';
         refs.countryInfo.innerHTML = '';
         return;
@@ -26,10 +25,12 @@ function onSearch(event) {
         return fetchCountries(searchQuery)
             .then(countries => renderCountries(countries))
             .catch(error => {
-                console.log(error);
                 Notify.failure('Oops, there is no country with that name');
+                console.log(error);
             });
     }
+
+    
 }
 
 function renderCountries(countries) {
@@ -41,7 +42,7 @@ function renderCountries(countries) {
 
     if (countries.length > 1 && countries.length <= 10) {
         const abbreviatedMarkup = countries.map(({ name, flags }) => {
-        return `<li><img src="${flags.svg}" width="60" /> ${name}</li>`;
+        return `<li><img src="${flags.svg}" width="60" /> ${name.official}</li>`;
         }).join('')
         refs.countryList.innerHTML = abbreviatedMarkup;
         refs.countryInfo.innerHTML = '';
@@ -49,7 +50,7 @@ function renderCountries(countries) {
 
     if (countries.length === 1) {
     const fullMarkup = countries.map(({ name, flags, capital, population, languages }) => {
-        return `<li><img src="${flags.svg}" width="50" /> ${name}</li>
+        return `<li><img src="${flags.svg}" width="50" /> ${name.official}</li>
         <p> Capital: <span>${capital}</span></p>
         <p> Population: <span>${population}</span></p>
         <p> Languages: <span>${Object.values(languages)}</span></p>`;
